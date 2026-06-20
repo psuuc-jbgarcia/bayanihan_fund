@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap");
+
+:root { font-family: "DM Sans", system-ui, sans-serif; color: #18322b; background: #f3f5ed; font-synthesis: none; text-rendering: optimizeLegibility; --ink:#18322b; --muted:#697770; --green:#165b45; --lime:#d7ed98; --line:#d9ded4; --paper:#fbfcf7; --danger:#9a352c; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid #94b834; outline-offset: 2px; }
+.app-shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+.site-header { height: 84px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+.brand { display:flex; align-items:center; gap:12px; color:var(--ink); text-decoration:none; font-family:"Manrope",sans-serif; font-weight:800; letter-spacing:-.02em; }
+.brand-mark { display:grid; place-items:center; width:36px; height:36px; border-radius:50%; color:var(--lime); background:var(--green); }
+.network-pill,.connected-badge,.testnet-tag { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); background:rgba(255,255,255,.5); padding:8px 12px; border-radius:999px; font-size:13px; font-weight:600; }
+.status-dot { width:7px; height:7px; border-radius:50%; background:#54a24c; box-shadow:0 0 0 4px #dcebd8; }
+.hero { display:grid; grid-template-columns:1fr 330px; align-items:end; gap:80px; padding:76px 0 64px; }
+.eyebrow,.step { text-transform:uppercase; letter-spacing:.14em; font-weight:700; font-size:12px; color:var(--green); }
+h1 { margin:12px 0 20px; max-width:800px; font:800 clamp(48px,7vw,82px)/.98 "Manrope",sans-serif; letter-spacing:-.065em; }
+.hero-copy { max-width:610px; margin:0; color:var(--muted); font-size:18px; line-height:1.65; }
+.trust-note { display:flex; gap:15px; align-items:flex-start; border-left:1px solid var(--line); padding:6px 0 6px 24px; }
+.trust-note>span { color:var(--green); font-size:22px; }
+.trust-note p { margin:0; color:var(--muted); font-size:14px; line-height:1.55; }
+.trust-note strong { color:var(--ink); }
+.wallet-grid { display:grid; grid-template-columns:.86fr 1.14fr; border:1px solid var(--line); border-radius:24px; overflow:hidden; box-shadow:0 20px 60px rgba(35,54,46,.06); }
+.card { min-height:530px; padding:34px; background:var(--paper); }
+.send-card { border-left:1px solid var(--line); background:#fff; }
+.card-heading { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:36px; }
+.card-heading h2 { margin:5px 0 0; font:700 24px "Manrope",sans-serif; letter-spacing:-.03em; }
+.connected-badge { color:var(--green); background:#edf4e2; border-color:#d7e5c1; }
+.connected-badge::before { content:""; width:6px; height:6px; background:#54a24c; border-radius:50%; }
+.testnet-tag { color:#6b5c22; background:#f5efcf; border:0; }
+.connect-state { display:flex; flex-direction:column; align-items:center; text-align:center; padding:26px 10px; }
+.wallet-orbit { display:grid; place-items:center; width:104px; height:104px; margin-bottom:24px; border:1px dashed #9caf9f; border-radius:50%; }
+.wallet-orbit span { display:grid; place-items:center; width:62px; height:62px; border-radius:18px; background:var(--green); color:white; font:700 24px "Manrope",sans-serif; transform:rotate(-6deg); box-shadow:0 10px 25px rgba(22,91,69,.22); }
+.connect-state h3 { margin:0 0 8px; font:700 20px "Manrope",sans-serif; }
+.connect-state>p { max-width:300px; margin:0 0 24px; color:var(--muted); line-height:1.5; }
+.primary-button,.secondary-button,.text-button,.icon-button { border:0; cursor:pointer; transition:transform .15s ease,background .15s ease,opacity .15s ease; }
+.primary-button { min-height:50px; padding:0 22px; border-radius:12px; color:white; background:var(--green); font-weight:700; box-shadow:0 8px 20px rgba(22,91,69,.16); }
+.primary-button:hover:not(:disabled) { background:#0e4d39; transform:translateY(-1px); }
+button:disabled { cursor:not-allowed; opacity:.52; }
+.secondary-button { padding:11px 15px; border:1px solid var(--line); border-radius:10px; color:var(--ink); background:white; font-weight:600; }
+.text-button,.icon-button { padding:10px 4px; background:transparent; color:var(--green); font-weight:700; }
+.icon-button { font-size:13px; }
+.button-row { display:flex; align-items:center; gap:18px; margin-top:26px; }
+.address-row { display:flex; align-items:center; justify-content:space-between; padding-bottom:22px; border-bottom:1px solid var(--line); }
+.label { display:block; color:var(--muted); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; margin-bottom:8px; }
+.address-row code { font-size:15px; }
+.balance-block { padding:32px 0 12px; }
+.balance-value { display:flex; align-items:baseline; gap:10px; }
+.balance-value strong { font:700 clamp(38px,5vw,54px) "Manrope",sans-serif; letter-spacing:-.055em; }
+.balance-value>span { color:var(--muted); font-weight:700; }
+.spendable { display:block; margin-top:8px; color:var(--muted); font-size:13px; }
+.skeleton { animation:pulse 1.2s ease infinite alternate; }
+@keyframes pulse { to { opacity:.4; } }
+form { display:flex; flex-direction:column; gap:22px; }
+label>span { display:block; margin-bottom:8px; font-size:13px; font-weight:700; }
+label em { color:var(--muted); font-style:normal; font-weight:400; }
+input { width:100%; height:49px; border:1px solid var(--line); border-radius:10px; padding:0 14px; background:#fbfcfa; color:var(--ink); transition:border-color .15s,box-shadow .15s; }
+input:hover:not(:disabled) { border-color:#aab7ac; }
+input:focus { border-color:#6f946f; box-shadow:0 0 0 3px rgba(111,148,111,.12); outline:none; }
+input::placeholder { color:#a4aca6; }
+small { display:block; margin-top:7px; color:var(--muted); font-size:12px; }
+.form-row { display:grid; grid-template-columns:.8fr 1.2fr; gap:14px; }
+.input-suffix { position:relative; }
+.input-suffix input { padding-right:52px; }
+.input-suffix>span { position:absolute; right:14px; top:16px; color:var(--muted); font-size:12px; font-weight:700; }
+.send-button { width:100%; margin-top:2px; }
+.card-disabled form { opacity:.65; }
+.inline-message { margin:0; padding:11px 13px; border-radius:9px; font-size:13px; line-height:1.45; }
+.inline-message.error,.inline-message.warning { color:var(--danger); background:#fbecea; }
+.inline-message.pending { color:#66551d; background:#f7f0cf; }
+.connect-state .inline-message { margin:16px 0 0; }
+.success-message { padding:14px; border:1px solid #cfe1c4; border-radius:10px; background:#edf6e8; }
+.success-message>div { display:flex; gap:10px; align-items:flex-start; }
+.success-message div>span { display:grid; place-items:center; width:24px; height:24px; border-radius:50%; background:var(--green); color:white; }
+.success-message p { margin:0; font-size:13px; line-height:1.5; }
+.success-message a { display:inline-block; margin:10px 0 7px 34px; color:var(--green); font-size:13px; font-weight:700; }
+.success-message code { display:block; margin-left:34px; overflow:hidden; text-overflow:ellipsis; color:var(--muted); font-size:11px; }
+footer { display:flex; justify-content:space-between; padding:30px 0 42px; color:var(--muted); font-size:12px; }
+@media (max-width:850px) { .hero{grid-template-columns:1fr;gap:28px;padding:54px 0 44px}.trust-note{max-width:450px}.wallet-grid{grid-template-columns:1fr}.send-card{border-left:0;border-top:1px solid var(--line)} }
+@media (max-width:560px) { .app-shell{width:min(100% - 24px,1180px)}.site-header{height:70px}.network-pill{padding:7px 9px;font-size:11px}h1{font-size:46px}.hero-copy{font-size:16px}.card{min-height:0;padding:24px 20px}.form-row{grid-template-columns:1fr}footer{flex-direction:column;gap:8px} }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important} }
