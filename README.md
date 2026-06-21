@@ -1,243 +1,163 @@
 # Bayanihan Fund
 
-## Project Description
-
-Bayanihan Fund is a transparent community emergency fund built on Stellar and Soroban. Residents contribute USDC to a shared treasury, while withdrawals require approval from multiple officers before funds are released. This ensures accountability, prevents misuse, and enables communities to respond quickly during disasters and medical emergencies.
-
----
-
-## Project Vision
-
-Bayanihan Fund aims to become a trusted treasury system for homeowners associations, barangays, cooperatives, churches, NGOs, and disaster response organizations.
-
-By leveraging Stellar and Soroban smart contracts, communities can manage funds transparently and respond faster during emergencies.
-
----
-
-## Key Features
-
-* Community fund contributions
-* Withdrawal request system
-* Multi-officer approval mechanism
-* Transparent treasury management
-* USDC transfers on Stellar
-* On-chain transaction records
-* Dashboard for monitoring requests and balances
-
----
-
-## Problem
-
-Ramon, the president of a homeowners association in Parañaque City, Philippines, currently manages emergency contributions through cash and spreadsheets. During floods and medical emergencies, members often question where the money goes, resulting in mistrust and delayed responses.
-
----
-
-## Solution
-
-Residents contribute USDC through a web application. Soroban smart contracts transparently record contributions and require approvals from multiple officers before emergency funds are released.
-
----
-
-## Stellar Features Used
-
-* Soroban Smart Contracts
-* USDC Transfers
-* Stellar Testnet
-
----
-
-## MVP Flow
-
-Resident contributes 50 USDC
-
-↓
-
-Treasurer creates withdrawal request
-
-↓
-
-President approves
-
-↓
-
-Secretary approves
-
-↓
-
-Funds are released
-
----
-
-## Technology Stack
-
-### Smart Contract
-
-* Rust
-* Soroban SDK v23
-
-### Frontend
-
-* Next.js
-* TailwindCSS
-* Freighter Wallet
-
-### Network
-
-* Stellar Testnet
-
----
-
-## Contract Details
-
-### Network
-
-Stellar Testnet
-
-### Contract ID
-
-CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-### Explorer
-
-https://stellar.expert/explorer/testnet/contract/CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-> Replace the contract ID above with your actual deployed contract address.
-
----
-
-## Screenshots
-
-### Dashboard
-
-![Dashboard](images/dashboard.png)
-
-### Contribute Page
-
-![Contribution](images/contribute.png)
-
-### Approval Page
-
-![Approval](images/approval.png)
-
----
-
-## Setup Guide
-
-### Prerequisites
-
-Install:
-
-* Rust
-* Soroban CLI
-* Freighter Wallet
-* Stellar Testnet account
-
-### Build Contract
-
-```bash
-stellar contract build
-```
-
-### Run Tests
-
-```bash
-cargo test
-```
-
-### Deploy Contract
-
-```bash
-stellar contract deploy \
---network testnet \
---source alice \
---wasm target/wasm32v1-none/release/bayanihan_fund.wasm
-```
-
----
+Bayanihan Fund is a Stellar community emergency treasury. Residents contribute
+tokens to a Soroban contract, the treasurer creates withdrawal requests, and
+both the president and secretary must approve a request before funds can be
+released.
+
+The frontend includes an empty Demo sandbox for pitching and a Live Testnet mode
+for real wallet-signed contract calls. Testnet assets have no real-world value.
+
+## MVP Features
+
+- Freighter-first wallet connection with Stellar Wallets Kit fallback
+- Testnet XLM or another Stellar Asset Contract token
+- Contributions with wallet-balance validation
+- Treasurer-only withdrawal requests
+- Independent president and secretary approvals
+- Reserved fund accounting to prevent overcommitted requests
+- Soroban transaction simulation, signing, submission, and status polling
+- Contract event polling and automatic UI synchronization
+- Typed contract errors and deployment-time role validation
 
 ## Project Structure
 
 ```text
-bayanihan-fund/
-├── images
-│   ├── dashboard.png
-│   ├── contribute.png
-│   └── approval.png
-├── src
-│   ├── lib.rs
-│   └── test.rs
-├── Cargo.toml
-├── README.md
-└── Makefile
+bayanihan_fund/
+|-- contracts/bayanihan-fund/
+|   |-- src/lib.rs
+|   `-- src/test.rs
+|-- frontend/
+|   |-- public/images/
+|   `-- src/
+|-- scripts/deploy-testnet.ps1
+|-- Cargo.toml
+|-- rust-toolchain.toml
+`-- README.md
 ```
 
----
+## Prerequisites
 
-## Future Scope
+Install the following on Windows:
 
-Planned enhancements include:
+1. [Rust](https://rustup.rs)
+2. Stellar CLI:
 
-* Mobile application support
-* SMS notifications
-* Anchor integration
-* AI-powered expense categorization
-* Analytics dashboard
-* Additional officer approvals
-* Offline transaction support
-* Support for NGOs and cooperatives
+```powershell
+cargo install --locked stellar-cli
+stellar --version
+```
 
----
+3. Node.js and npm
+4. Freighter configured for Stellar Testnet
 
-## Why This Wins
+The checked-in `rust-toolchain.toml` installs the required Rust target and
+formatting components when Rust commands run in this repository.
 
-### Real Community Problem
+## Prepare Testnet Accounts
 
-Floods, fires, and medical emergencies are common in many communities.
+Create and fund a CLI identity that will deploy the contract:
 
-### Strong Soroban Use Case
+```powershell
+stellar keys generate deployer --network testnet --fund
+stellar keys address deployer
+```
 
-Multi-step approvals naturally fit smart contracts.
+The contract requires three different `G...` account addresses:
 
-### Real Money Movement
+- Treasurer
+- President
+- Secretary
 
-Bayanihan Fund coordinates actual financial transactions rather than simply storing information.
+These may be public addresses from separate Freighter Testnet accounts. To use
+the approval workflow in the frontend, each officer account must be accessible
+in Freighter so its owner can sign the corresponding action.
 
-### Global Applicability
+## One-Command Testnet Deployment
 
-The system can be used in:
+From the repository root, replace the sample role addresses and run:
 
-* Philippines
-* Indonesia
-* India
-* Africa
-* Latin America
+```powershell
+.\scripts\deploy-testnet.ps1 `
+  -Treasurer "G_TREASURER_ADDRESS" `
+  -President "G_PRESIDENT_ADDRESS" `
+  -Secretary "G_SECRETARY_ADDRESS"
+```
 
----
+The script performs the complete deployment workflow:
 
-## Timeline
+1. Verifies Rust, Stellar CLI, role addresses, and the deployer identity.
+2. Runs `cargo test --workspace`.
+3. Builds optimized contract WASM.
+4. Resolves the native Testnet XLM token contract.
+5. Deploys the contract and invokes its constructor atomically.
+6. Writes the returned contract ID to `frontend/.env`.
+7. Prints the Stellar Expert contract explorer URL.
 
-### Day 1
+Use another Stellar Asset Contract by supplying its contract ID and symbol:
 
-Smart contract foundation
+```powershell
+.\scripts\deploy-testnet.ps1 `
+  -Treasurer "G_TREASURER_ADDRESS" `
+  -President "G_PRESIDENT_ADDRESS" `
+  -Secretary "G_SECRETARY_ADDRESS" `
+  -TokenContract "C_TOKEN_CONTRACT_ID" `
+  -TokenSymbol "USDC"
+```
 
-### Day 2
+Use `-SkipTests` only when tests were already run successfully in the same
+revision.
 
-Contribution functionality
+## Manual Contract Commands
 
-### Day 3
+```powershell
+cargo test --workspace
+stellar contract build
+stellar contract id asset --asset native --network testnet
+```
 
-Withdrawal requests and approvals
+The deployment artifact is created at:
 
-### Day 4
+```text
+target/wasm32v1-none/release/bayanihan_fund.wasm
+```
 
-Frontend integration
+## Frontend
 
-### Day 5
+After deployment, the script creates `frontend/.env` in this format:
 
-Testing and deployment
+```env
+VITE_CONTRACT_ID=C_DEPLOYED_CONTRACT_ID
+VITE_SOROBAN_RPC_URL=https://soroban-testnet.stellar.org
+VITE_TOKEN_SYMBOL=XLM
+```
 
----
+Install dependencies and start the app:
 
-## License
+```powershell
+cd frontend
+npm install
+npm run dev
+```
 
-MIT License
+Open the URL printed by Vite, select Live mode, connect Freighter, and confirm
+that Freighter is still set to Testnet.
+
+## Testnet Validation Flow
+
+1. Connect a funded resident wallet and contribute a small XLM amount.
+2. Connect the configured treasurer wallet and create a withdrawal request.
+3. Connect the configured president wallet and approve the request.
+4. Connect the configured secretary wallet and approve the request.
+5. Execute the fully approved request.
+6. Verify the transaction links, balances, request state, and recipient balance.
+
+The contract reserves requested funds when a request is created. This prevents
+multiple open requests from promising more than the available treasury balance.
+
+## Production Note
+
+This repository targets Stellar Testnet. A production launch requires a new
+Mainnet deployment, a deliberate asset choice, operational key management,
+independent security review, legal/compliance review, monitoring, and a tested
+recovery process. Never reuse Testnet contract IDs or assumptions on Mainnet.
